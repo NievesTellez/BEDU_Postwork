@@ -1,4 +1,4 @@
-## Postwork
+## Postwork sesión 1
 1. instalar paqueteria tidyverse con el comando install.packages("tidyverse") para poder hacer uso de la varias funciones.
 2. Una vez instalado, carga el paquete haciendo uso de la función library(tidyverse). 
 
