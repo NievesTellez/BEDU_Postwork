@@ -1,0 +1,109 @@
+---
+title: "Postwork3"
+author: "Nieves"
+date: "2022-11-18"
+output: 
+    github_document:
+    fig_width: 8
+    fig_height: 8
+---
+
+# Postwork Sesión 3
+
+#### Objetivo
+
+#- Realizar un análisis descriptivo de las variables de un dataframe
+
+#### Requisitos
+
+#1. R, RStudio
+#2. Haber realizado el prework y seguir el curso de los ejemplos de la sesión
+#3. Curiosidad por investigar nuevos tópicos y funciones de R
+
+#### Desarrollo
+
+```{r}
+library(tidyverse)
+install.packages("DescTools")
+library(DescTools)
+install.packages("moments")
+library(moments)
+```
+
+
+"Utilizando el dataframe `boxp.csv` realiza el siguiente análisis descriptivo. No olvides excluir los missing values y transformar las variables a su
+tipo y escala correspondiente."
+
+```{r}
+df <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2022/main/Sesion-03/Data/boxp.csv")
+str(df)
+summary(df)
+```
+
+```{r}
+df$Categoria <- factor(df$Categoria)
+df$Grupo <- factor(df$Grupo, labels = c("A","B") )
+```
+
+```{r}
+sum(complete.cases(df))
+```
+
+```{r}
+df.clean <- df[complete.cases(df),]
+summary(df.clean)
+```
+
+#1) Calcula e interpreta las medidas de tendencia central de la variable `Mediciones`
+
+```{r}
+mean(df.clean$Mediciones)  
+median(df.clean$Mediciones) 
+Mode(df.clean$Mediciones)[1] 
+```
+
+#2) Con base en tu resultado anterior, ¿qué se puede concluir respecto al sesgo de `Mediciones`?
+## Dado que se cumple la condición moda < mediana < media, esta sesgado a la derecha.
+skewness(df.clean$Mediciones)  #1.729  puesto que es > a 1, esto representa sesgo a la derecha
+#3) Calcula e interpreta la desviación estándar y los cuartiles de la distribución de `Mediciones`
+
+```{r}
+var(df.clean$Mediciones) 
+sd(df.clean$Mediciones) 
+
+cuartiles <- quantile(df.clean$Mediciones, probs= c(0.25, 0.5, 0.75))
+cuartiles   
+             
+```
+
+"El 50% de los datos se concentran entre 23.45 y 82.85"
+
+"4) Con ggplot, realiza un histograma separando la distribución de `Mediciones` por `Categoría`
+¿Consideras que sólo una categoría está generando el sesgo? No, todos las categorias contribuyen, 
+todas se encuentran con un sesgo a la derecha, aunque sí en mayor medida la clase C1."
+
+```{r}
+  ggplot(df.clean, aes(Mediciones)) +
+  geom_histogram(bins = 4) + 
+  labs(title = "Histograma", 
+       x = "Ingreso",
+       y = "Frequency") + 
+  theme_classic() +
+  facet_wrap(~df.clean$Categoria)
+```
+
+
+"5) Con ggplot, realiza un boxplot separando la distribución de `Mediciones` por `Categoría` 
+y por `Grupo` dentro de cada categoría. ¿Consideras que hay diferencias entre categorías? ¿Los grupos al interior de cada categoría 
+podrían estar generando el sesgo?" "Las categorias C2 y C3  en el grupo A si muestran una mayor dispersion que su grupo B "
+
+```{r}
+ggplot(df.clean, aes(y= Mediciones)) + 
+  geom_boxplot() + 
+  scale_x_discrete( ) +
+  labs(title = "Mediciones agrupadas por grupo y categoría",
+       y = "Mediciones") +
+  facet_wrap(df.clean$Categoria~df.clean$Grupo)
+```
+
+  
