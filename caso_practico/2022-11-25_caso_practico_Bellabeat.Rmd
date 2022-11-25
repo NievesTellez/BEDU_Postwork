@@ -1,0 +1,169 @@
+---
+title: "Bellabeat_analisys"
+author: "Nieves"
+date: "2022-11-25"
+output: github_document
+---
+
+## Preguntar
+
+Identifica el problema
+
+Analizar los datos de los dispositivos inteligentes para conocer el uso que hacen los consumidores de sus dispositivos inteligentes y poder aplicarlo a los productos de Bellabeat.
+
+### Interesados
+
+* Urška Sršen: Cofundadora y directora creativa de Bellabeat
+* Sando Mur: Matemático y cofundador de Bellabeat, miembro clave del equipo ejecutivo de Bellabeat.
+* Equipo de análisis computacional de datos de marketing de Bellabeat:
+
+
+
+
+##  Preparar
+
+Vamos a hacer uso de los datos que nos proporcionan en el caso practico 2, los datos se guardaron en una subcarpeta de nombre “Fitabase_Data”, en la carpeta de “caso_practico”. Para todo el proceso de análisis se hará uso de el lenguaje de programación R. 
+
+Empezamos con la instalación de librerías que se requieren, en caso de que ya se encuentren instaladas, omitimos este paso.
+
+```{r}
+install.packages("tidyverse")
+install.packages("lubridate")
+```
+Cargamos las librerías.
+
+```{r}
+library(tidyverse)
+library(lubridate)
+
+```
+
+Revisamos como se organizan los datos, con los siguientes comandos, la primera linea nos ayuda a hacer una lista con todos los archivos que tenemos para analizar. Posteriormente los leemos con ayuda de la función lapply y podemos ver un resumen de cada archivo.
+
+```{r}
+temp = list.files(path = "2022_11_25_Bellabeat_data/",pattern="*.csv", full.names = T) 
+myfiles <- lapply(temp, read.csv, header =TRUE)
+lapply(X = myfiles,  summary)
+```
+De los resultados anteriores podemos observar que varios datos se encuentran repetidos en diferentes archivos, por lo que algunos de estos archivos se pueden omitir y solo vamos a hacer el análisis con los que no tengan datos repetidos. También podemos observar que hay algunas columnas que no nos proporcionan información relevante debido a que no tienen el formato correcto.
+
+## Procesar
+Cargaremos los datos nuevamente, pero en este caso solo los archivos en los que nos concentraremos. Nota: este paso es probable que se pueda omitir si hacemos uso de los datos que cargamos anteriormente, el inconveniente aquí fue al momento de hacer la limpieza.
+
+```{r}
+dailyActivity_m <- read_csv(temp[1])
+sleepDay_m <- read_csv(temp[17])
+weightLogInfo_m <- read_csv(temp[18])
+hourlyCalories_m <- read_csv(temp[6])
+hourlyIntensities_m <- read_csv(temp[7])
+hourlySteps_m <- read_csv(temp[8])
+```
+Ahora transformaremos los datos en el tipo correcto empezando por el primer archivo, el segundo y así sucesivamente.
+```{r}
+dailyActivity_m$Id <- factor(dailyActivity_m$Id)
+dailyActivity_m$ActivityDate <- mdy(dailyActivity_m$ActivityDate)
+summary(dailyActivity_m)
+```
+```{r}
+sleepDay_m$Id <- factor(sleepDay_m$Id)
+sleepDay_m$SleepDay <- mdy_hms(sleepDay_m$SleepDay)
+summary(sleepDay_m)
+```
+
+```{r}
+weightLogInfo_m$Id <- factor(weightLogInfo_m$Id)
+weightLogInfo_m$Date <- mdy_hms(weightLogInfo_m$Date)
+weightLogInfo_m$LogId <- factor(weightLogInfo_m$LogId)
+summary(weightLogInfo_m)
+```
+
+```{r}
+hourlyCalories_m$Id <- factor(hourlyCalories_m$Id)
+hourlyCalories_m$ActivityHour <- mdy_hms(hourlyCalories_m$ActivityHour)
+summary(hourlyCalories_m)
+```
+
+```{r}
+hourlyIntensities_m$Id <- factor(hourlyIntensities_m$Id)
+hourlyIntensities_m$ActivityHour <- mdy_hms(hourlyIntensities_m$ActivityHour)
+summary(hourlyIntensities_m)
+```
+
+```{r}
+hourlySteps_m$Id <- factor(hourlySteps_m$Id)
+hourlySteps_m$ActivityHour <- mdy_hms(hourlySteps_m$ActivityHour)
+summary(hourlySteps_m)
+```
+```{r}
+n_distinct(dailyActivity_m$Id)
+```
+
+```{r}
+n_distinct(sleepDay_m$Id)
+```
+
+```{r}
+n_distinct(weightLogInfo_m$Id)
+```
+
+```{r}
+n_distinct(hourlyIntensities_m$Id)
+```
+
+
+## Analizar
+De los resúmenes que nos arrojan los datos en el formato correcto, paso anterior, podemos observar que estos datos se registraron en un periodo que corresponde de 2016-04-12 a 2016-05-12, 31 días. Los usuarios que se encuentran registrados en el archivo dailyActivity son 33, mientras que para los siguientes archivos son 24, 8, 33, 33, 33, respectivamente. 
+
+Los últimos tres  archivos representan datos para los mismos usuarios, pero diferente categoría, por lo que podemos agruparlos para ver si encontramos alguna tendencia que nos pueda ayudarnos en el marketing de la empresa. 
+
+```{r}
+combined_data <- merge(hourlyCalories_m, hourlyIntensities_m,  by= c("Id", "ActivityHour"))
+combined_data_2 <- merge(combined_data, hourlySteps_m, by=c("Id", "ActivityHour"))
+summary(combined_data_2)
+```
+
+```{r}
+ggplot(data=combined_data_2, aes(x=StepTotal, y=Calories)) +
+  geom_point(shape=10, alpha=0.5) + geom_smooth()+
+  labs(title = "Calories vs Step Total", 
+       x = "Step Total",
+       y = "Calories") + 
+  theme_linedraw()
+```
+De esta gráfica podemos observar que hay una tendencia casi lineal entre el numero de pasos y las calorías quemadas, por lo que podemos atraer a las personas para que hagan más ejercicio mientras tienen un control entre las calorías que queman con ayuda de su dispositivo. 
+
+```{r}
+ggplot(data=combined_data_2, aes( x=TotalIntensity, y=Calories)) + 
+  geom_point() + geom_smooth()+
+  labs(title = "Calories vs Total Intensity", 
+       x = "Total Intensity",
+       y = "Calories") + 
+  theme_linedraw()
+```
+Lo mismo que con la gráfica anterior. 
+
+
+```{r}
+ggplot(dailyActivity_m, aes(ActivityDate)) + 
+  geom_bar(fill = "darkblue", alpha = 0.5) +
+  labs(title = "", 
+       x = "Activity date",
+       y = "Frequency") + 
+  theme_classic()
+```
+De esta gráfica podemos observar que el número de usuarios fue decreciendo, los primeros días se registraron los máximos posibles 33 registros y posteriormente fue decreciendo. 
+
+
+
+
+# Compartir 
+Durante la fase de compartir, contarás una historia utilizando los datos y comunicando tus hallazgos.
+Determina la mejor manera de compartir tus hallazgos.
+Crea visualizaciones de datos efectivas
+Presenta tus hallazgos
+Garantiza que el público pueda acceder a tu trabajo
+
+# Actuar
+Considerando la cantidad de usuarios y el numero de datos podemos decir que no son tan confiables los resultados, sobre todo si se quiere expandir la empresa de manera global. 
+Por supuesto que hacen falta más datos.
+
