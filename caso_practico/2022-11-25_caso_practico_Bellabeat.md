@@ -757,6 +757,9 @@ summary(dailyActivity_m)
     ##  3rd Qu.:2793  
     ##  Max.   :4900  
     ## 
+    
+De los adatos anteriore podemos observar que en promedio aproximadamente 17 hr la gente no realiza actividad fisica, 
+mientras que en promedio entre 21 minutos y 3.2 hr realizan actividad que va desde muy activa a ligera. 
 
 ``` r
 sleepDay_m$Id <- factor(sleepDay_m$Id)
@@ -780,6 +783,12 @@ summary(sleepDay_m)
     ##  3rd Qu.:490.0      3rd Qu.:526.0  
     ##  Max.   :796.0      Max.   :961.0  
     ## 
+    
+   
+De este conjunto de datos podemos extraer el promedio de horas que duerme esta muestra de la población 
+que es alrededor de 7 horas, mientras que se la pasa en cama en promedio 7.6 horas. 
+Lo recomendable es dormir 8 horas. En ocasiones dormir lo recomendable no es posible por que hay que hacer mas actividades, 
+quiza una manera es ayudar a hacer un plan en su dispositivo, para que su tiempo sea efectivo.
 
 ``` r
 weightLogInfo_m$Id <- factor(weightLogInfo_m$Id)
@@ -938,6 +947,7 @@ ggplot(data=combined_data_2, aes(x=StepTotal, y=Calories)) +
     ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
 ![](2022-11-25_caso_practico_Bellabeat_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
 De esta gráfica podemos observar que hay una tendencia casi lineal entre
 el numero de pasos y las calorías quemadas, por lo que podemos atraer a
 las personas para que hagan más ejercicio mientras tienen un control
@@ -955,6 +965,7 @@ ggplot(data=combined_data_2, aes( x=TotalIntensity, y=Calories)) +
     ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
 ![](2022-11-25_caso_practico_Bellabeat_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
 Lo mismo que con la gráfica anterior.
 
 ``` r
@@ -967,9 +978,11 @@ ggplot(dailyActivity_m, aes(ActivityDate)) +
 ```
 
 ![](2022-11-25_caso_practico_Bellabeat_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
 De esta gráfica podemos observar que el número de usuarios fue
 decreciendo, los primeros días se registraron los máximos posibles 33
-registros y posteriormente fue decreciendo.
+registros y posteriormente fue decreciendo. Quiza motivar a la gente a ser constante 
+podria aplicarse en la estrategia de marketing. 
 
 # Compartir
 
