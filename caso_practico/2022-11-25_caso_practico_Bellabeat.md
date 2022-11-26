@@ -1,4 +1,4 @@
-Bellabeat_analisys
+Bellabeat_analysis
 ================
 Nieves
 2022-11-25
