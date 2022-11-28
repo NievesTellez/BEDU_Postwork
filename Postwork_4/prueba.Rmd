@@ -1,0 +1,134 @@
+---
+title: "Prueba"
+author: "Nieves"
+date: "2022-11-17"
+output: github_document
+---
+
+
+# POSTWORK_4
+```{r}
+library(DescTools)
+library(tidyverse)
+library(DescTools)
+```
+
+```{r}
+df <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2022/main/Sesion-03/Data/telecom_service.csv")
+summary(df)
+```
+
+### Medidas de tendencia central
+
+```{r}
+mean(df$total_intl_charge)
+median(df$total_intl_charge)
+Mode(df$total_intl_charge)
+```
+
+### Medidas de dispersión
+```{r}
+var(df$total_intl_charge)
+sd(df$total_intl_charge)
+```
+
+
+Dado que la media, la mediana y la moda son aproximadamente iguales podriamos hablar de una tendencia normal.
+
+Para corroborar vamos a graficar el histograma 
+
+
+
+```{r}
+ggplot() +
+  geom_histogram(aes(df$total_intl_charge),bins = 16 ) + 
+  labs(title = "Histograma", 
+       x = "Total Charge",
+       y = "Frequency") 
+```
+
+
+### Graficamos la densidad de probabilidad y el histograma para comparar 
+ 1.- Grafica la distribución teórica de la variable aleatoria total_intl_charge
+
+```{r}
+hist(df$total_intl_charge, prob = TRUE, main = "Histogram with normal curve", , xlab = "Total charge")
+x <- seq(min(df$total_intl_charge), max(df$total_intl_charge), length = 60)
+f <- dnorm(x, mean = mean(df$total_intl_charge), sd = sd(df$total_intl_charge))
+lines(x, f, col = "red", lwd = 3)
+
+```
+```{r}
+mu <- mean(df$total_intl_charge)
+sigma <- sd(df$total_intl_charge)
+x <- x <- seq(-4, 4, 0.01)*sigma + mu 
+y <- dnorm(x, mean = mu, sd = sigma) 
+```
+
+"2. ¿Cuál es la probabilidad de que e ltotal de cargos internacionales sea
+menor a 1.85 usd?"
+
+```{r}
+pnorm(q = 1.85, mean = mu, sd = sigma)
+```
+
+"3. ¿Cuál es la probabilidad de que el total de cargos internacionales sea
+mayor a 3 usd?"
+
+```{r}
+pnorm(q = 3, mean = mu, sd = sigma, lower.tail = FALSE )
+```
+
+
+"4. ¿Cuál es la probabilidad de que el total de cargos internacionales esté
+entre 2.35 usd y 4.85 usd?"
+
+```{r}
+pnorm(q = 4.85, mean = mean(df$total_intl_charge), sd = sd(df$total_intl_charge))-
+  pnorm(q = 2.35, mean = mean(df$total_intl_charge), sd = sd(df$total_intl_charge))
+```
+
+
+### La probabilidad para las preguntas 3, 4 y 5 visualmente se ve de la siguiente manera
+```{r}
+
+par(mfrow = c(1, 3))
+plot(x, y, type = "l", xlab = "", ylab = "")
+title(main = "P(X<1.85)", sub = expression(paste(mu == mu, " y ", sigma == sigma)))
+
+polygon(c(min(x), x[x<=1.85], 1.85), c(0, y[x<=1.85], 0), col="red")
+
+plot(x, y, type = "l", xlab = "", ylab = "")
+title(main = "P(X>3)", sub = expression(paste(mu == mu, " y ", sigma == sigma)))
+
+polygon(c(3, x[x>=3], max(x)), c(0, y[x>=3], 0), col="blue")
+
+plot(x, y, type = "l", xlab="", ylab="")
+title(main = "P(2.35< X < 4.85)", sub = expression(paste(mu == mu, " y ", sigma == sigma)))
+
+polygon(c(2.35, x[x>=2.35 & x<=4.85], 4.85), c(0, y[x>=2.35 & x<=4.85], 0), col="green")
+```
+
+
+
+5. Con una probabilidad de 0.48,¿cuál es el total de cargos internacionales
+más alto que podría esperar?
+
+```{r}
+qnorm(p=0.48, mean=mean(df$total_intl_charge), sd=mean(df$total_intl_charge))
+```
+
+  
+"6. ¿Cuáles son los valores del total de cargos internacionales que 
+dejan exactamente al centro el 80% de probabilidad?"
+
+```{r}
+qnorm(p=0.10, mean=mu, sd=sigma)
+qnorm(p=0.10, mean=mu, sd=sigma, lower.tail = FALSE)
+```
+
+
+
+
+
+
