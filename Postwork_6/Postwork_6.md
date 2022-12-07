@@ -45,7 +45,7 @@ head(adv)
     ## 5 180.8  10.8      58.4  17.9
     ## 6   8.7  48.9      75.0   7.2
 
-Reordenamos los datos para tener la variable independiente en la primer
+Reordenamos los datos para tener la variable dependiente en la primer
 columna.
 
 ``` r
