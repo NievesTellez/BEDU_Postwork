@@ -41,7 +41,7 @@ data("iris")
 
 Nivel de confianza 99%, nivel de significancia 0.01
 
-1.  Ho \$ .7 \$cm
+1.  Ho $\mu = 5.7$cm
 2.  Ha $\mu != 5.7$ cm
 
 ``` r
