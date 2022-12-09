@@ -72,13 +72,13 @@ Establecemos las hipotesis que queremos corroborar y el nivel de
 confianza y significancia. Nivel de confianza 99%, nivel de
 significancia 0.01
 
-1.  Ho $\mu =5 .7$cm
-2.  Ha $\mu != 5.7$cm
+1.  Ho $\mu =5 .7$ cm
+2.  Ha $\mu != 5.7$ cm
 
 Con ayuda de la prueba t de student (utilizamos el siguiente comando
 `?t.test` en *r* para ver la estructura de la función) podemos aceptar o
 rechazar las hipotesis antes propuestas, en este caso empleamos
-‘alternative = “two sided”’ dado que el valor de la hipotesis nula es
+`alternative = “two sided”` dado que el valor de la hipotesis nula es
 igual a cero.
 
 ``` r
@@ -158,8 +158,8 @@ var.test(iris[iris$Species == "virginica" , "Petal.Length"],
     ## ratio of variances 
     ##           1.379372
 
-R.-\* El p-value en la prueba de varianza es de 0.2637, la taza de
-varianza es de 1.3793.\*
+R.- El p-value en la prueba de varianza es de 0.2637, la taza de
+varianza es de 1.3793.
 
 - Realizamos la prueba t de student
 
@@ -181,12 +181,12 @@ t.test(x=iris[iris$Species == "virginica" , "Petal.Length"],
     ## mean of x mean of y 
     ##     5.552     4.260
 
-R.-\* Dado que el valor p-values es aproximadamente cero, se puede
+R.- Dado que el valor p-values es aproximadamente cero, se puede
 rechazar la hipotesis nula, esto es el promedio entre la longitud del
 petalo no es el mismo para las especies virginica y versicolor, es 1.1
-cm más grande.\*
+cm más grande.
 
-- Graficamente de ve de la siguiente manera
+- Graficamente se ve de la siguiente manera
 
 ``` r
 df <- iris %>% 
