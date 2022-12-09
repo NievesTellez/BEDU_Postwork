@@ -30,7 +30,7 @@ planteamiento de hipótesis adecuado y concluye.
 
 ### Desarrrollo
 
-Cargamos la libreria tidyverse que nos será de utilidad más adelante
+Cargamos la librería tidyverse que nos será de utilidad más adelante
 
 ``` r
 library(tidyverse)
