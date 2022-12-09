@@ -72,8 +72,8 @@ Establecemos las hipotesis que queremos corroborar y el nivel de
 confianza y significancia. Nivel de confianza 99%, nivel de
 significancia 0.01
 
-1.  Ho $\mu =5 .7$cm
-2.  Ha $\mu != 5.7$cm
+1.  Ho $\mu =5 .7$ cm
+2.  Ha $\mu != 5.7$ cm
 
 Con ayuda de la prueba t de student (utilizamos el siguiente comando
 `?t.test` en *r* para ver la estructura de la función) podemos aceptar o
