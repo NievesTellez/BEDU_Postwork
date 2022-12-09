@@ -68,7 +68,7 @@ head(iris)
 
 #### I. En promedio, el largo del sépalo de la especie setosa (Sepal.Length) es igual a 5.7 cm.
 
-Establecemos las hipotesis que queremos corroborar y el nivel de
+Establecemos las hipótesis que queremos corroborar y el nivel de
 confianza y significancia. Nivel de confianza 99%, nivel de
 significancia 0.01
 
@@ -77,8 +77,8 @@ significancia 0.01
 
 Con ayuda de la prueba t de student (utilizamos el siguiente comando
 `?t.test` en *r* para ver la estructura de la función) podemos aceptar o
-rechazar las hipotesis antes propuestas, en este caso empleamos
-‘alternative = “two sided”’ dado que el valor de la hipotesis nula es
+rechazar las hipótesis antes propuestas. En este caso empleamos
+`alternative = “two sided”` dado que el valor de la hipótesis nula es
 igual a cero.
 
 ``` r
@@ -98,12 +98,12 @@ t.test(x=iris$Sepal.Length, alternative = "two.sided", mu=5.7)
     ##  5.843333
 
 R.- Puesto que el p-value = 0.03567 y este valor es mayor a 0.01
-entonces EEE de aceptar la hipotesis nula esto quiere decir que en
-promedio el largo del sepalo de la especie setosa es igual a 5.7 cm.
+entonces EEE de aceptar la hipótesis nula al nivel de confianza y significancia antes establecido,
+esto quiere decir que en promedio el largo del sepalo de la especie setosa es igual a 5.7 cm.
 
 #### II. En promedio, el ancho del pétalo de la especie virginica (Petal.Width) es menor a 2.1 cm.
 
-- Establecemos las hipotesis para este insciso
+- Establecemos las hipótesis para este insciso
 
 1.  Ho $\mu >= 2.1$ cm
 2.  Ha $\mu < 2.1$ cm
@@ -127,12 +127,12 @@ t.test(x=iris$Petal.Width, alternative = "less", mu=2.1)
     ##  1.199333
 
 R.- En este caso el p-value es de 2.2e-16, un valor aproximadamente cero
-y por tanto menor a 0.01, entonces EEE para rechazar la hipotesis nula,
+y por tanto menor a 0.01, entonces EEE para rechazar la hipótesis nula,
 esto es el ancho del petalo de la especie virginica es menor a 2.1 cm.
 
 #### III. En promedio, el largo del pétalo de la especie virgínica es 1.1 cm más grande que el promedio del largo del pétalo de la especie versicolor.
 
-- Establecemos las hipotesis
+- Establecemos las hipótesis
 
 1.  Ho: razon =1 $\mu_{pl.virginica} = \mu_{pl.versicolor}$
 2.  Ha: razon !=1: $\mu_{pl.virginica} > \mu_{pl.versicolor}$
@@ -182,7 +182,7 @@ t.test(x=iris[iris$Species == "virginica" , "Petal.Length"],
     ##     5.552     4.260
 
 R.-\* Dado que el valor p-values es aproximadamente cero, se puede
-rechazar la hipotesis nula, esto es el promedio entre la longitud del
+rechazar la hipótesis nula, esto es el promedio entre la longitud del
 petalo no es el mismo para las especies virginica y versicolor, es 1.1
 cm más grande.\*
 
@@ -208,7 +208,7 @@ df
 
 #### IV. En promedio, no existe diferencia en el ancho del sépalo entre las 3 especies.
 
-- Establecemos las hipotesis
+- Establecemos las hipótesis
 
 1.  Ho $\mu_{sepal} = \mu_{virginica} = \mu_{versicolor}$
 2.  Ha $\mu_{sepal} != \mu_{virginica} != \mu_{versicolor}$
@@ -247,6 +247,6 @@ summary(anova_test)
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 R. Dado que el valor p-value = Pr es muy cercano a cero entonces se
-rechaza la hipotesis nula, esto quiere decir que, el promedio del ancho
+rechaza la hipótesis nula, esto quiere decir que, el promedio del ancho
 del petalo entre las tres especies es distinto, o por lo menos dos de
 estas especies, lo cual se puede apreciar en el boxplot.
