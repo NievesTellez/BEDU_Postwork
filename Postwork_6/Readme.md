@@ -78,6 +78,12 @@ head(adv2)
 
 #### Obtenemos la matriz de correlación
 
+| Syntax      | Description | Test Text     |
+| :---        |    :----:   |          ---: |
+| Header      | Title       | Here's this   |
+| Paragraph   | Text        | And more      |
+
+
 ``` r
 round(cor(adv2),4)
 ```
