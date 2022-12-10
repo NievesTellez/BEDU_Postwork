@@ -79,10 +79,10 @@ el rango de valores va de -1 a 1, con -1 y 1 indicando perfecta
 correlación negativa y positiva respectivamente. Que tan fuerte es la correlación 
 dependiendo del valor que se obtenga lo podemos ver en la siguiente tabla:
 
-| correlación | no    | Pequeña | Mediana     | Grande  |
-|  :--- :  | :--- :       |    :----:   |   :---: |.  :---: |
-| negativa | -0.09 a 0.0      | -0.3 a -0.1  | -0.5 a -0.3  | -1.0 a -0.5  |
-| positiva | 0.0 a 0.09   | 0.1 a 0.3        | 0.3 a 0.5   | 0.5 a 1.0     |
+| correlación | no           | Pequeña     | Mediana     | Grande      |
+|  :--- :     | :--- :       |    :----:   |   :---:     |.  :---:     |
+| negativa    | -0.09 a 0.0  | -0.3 a -0.1 | -0.5 a -0.3 | -1.0 a -0.5 |
+| positiva    | 0.0 a 0.09   | 0.1 a 0.3   | 0.3 a 0.5   | 0.5 a 1.0   |
 
 ``` r
 round(cor(adv2),4)
