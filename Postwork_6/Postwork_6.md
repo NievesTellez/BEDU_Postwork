@@ -94,7 +94,7 @@ round(cor(adv2),4)
     ## Radio     0.3496 0.0548 1.0000    0.3541
     ## Newspaper 0.1580 0.0566 0.3541    1.0000
 
-De acuerdo a la tabla anterior las correlaciones entre Sales y TV es
+De acuerdo a las tablas anteriores la correlación entre Sales y TV es
 grande, mientras que para Sales y Radio es mediana de 0.3496 y para
 Sales y Newspaper es pequeña.
 
