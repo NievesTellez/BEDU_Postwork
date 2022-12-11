@@ -35,7 +35,7 @@ planteamiento de hipótesis adecuado y concluye.
 
 ### Desarrrollo
 
-Cargamos la libreria tidyverse que nos será de utilidad más adelante
+Cargamos la libreria `tidyverse que nos será de utilidad más adelante
 
 ``` r
 library(tidyverse)
@@ -78,8 +78,8 @@ confianza y significancia. Nivel de confianza 99%, nivel de
 significancia 0.01, para rechazar la hipótesis nula el valor del p-value
 debe ser menor al nivel de significancia.
 
-- Ho: $\mu = 5 .7$cm
-- Ha: $\mu \neq 5.7$cm
+- Ho: $\mu = 5 .7$ cm
+- Ha: $\mu \neq 5.7$ cm
 
 Con ayuda de la prueba t de student, la cual se emplea en los casos
 cuando se desconoce la desviación estandar o cuando hay pocos datos
