@@ -317,6 +317,13 @@ menor nivel socioeconómico, el gasto va aumentando conforme incrementa
 el Nivel socioecónomico, aunque hay que tomar en cuenta que tambien la
 dispersión de los datos incrementa.
 
+Considerando:
+
+- Una muestra aleatoria
+- Independiente
+- Se distribuye de manera normal 
+- Homogeneidad en las varianzas
+
 - Vamos a realizar la prueba anova para inferir sobre la población,
   primero hacemos la prueba de varianzas de los diferentes grupos para
   ver si son iguales
