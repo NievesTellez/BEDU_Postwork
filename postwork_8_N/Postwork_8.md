@@ -435,6 +435,14 @@ boxplot(c2$ratio2.alns.total ~ c2$nse5f,
 
 ![](Postwork_8_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
+Considerando:
+
+- Una muestra aleatoria
+- Independiente
+- Se distribuye de manera normal 
+- Homogeneidad en las varianzas
+
+
 Establecemos las hipótesis
 
 - Ho: las varianzas de la razon entre gastos saludables y no sludables
