@@ -324,7 +324,7 @@ Considerando:
 - Se distribuye de manera normal 
 - Homogeneidad en las varianzas
 
-- Vamos a realizar la prueba anova para inferir sobre la población,
+Vamos a realizar la prueba anova para inferir sobre la población,
   primero hacemos la prueba de varianzas de los diferentes grupos para
   ver si son iguales
 
