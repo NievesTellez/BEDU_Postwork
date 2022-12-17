@@ -1,0 +1,378 @@
+---
+title: "Postwork_8"
+output: github_document
+date: "2022-12-10"
+---
+
+## Planteamiento del problema
+
+Un centro de salud nutricional está interesado en analizar estadísticamente y probabilísticamente 
+los patrones de gasto en alimentos saludables y no saludables en los hogares mexicanos 
+con base en su nivel socioeconómico, en si el hogar tiene recursos financieros extra al ingreso y 
+en si presenta o no inseguridad alimentaria. Además, está interesado en un modelo 
+que le permita identificar los determinantes socioeconómicos de la inseguridad alimentaria.
+
+##### Cargamos librerias 
+
+```{r}
+library(tidyverse)
+library(moments)
+```
+
+
+
+##### Lemos el data frame
+
+```{r}
+df <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2022/main/Sesion-08/Postwork/inseguridad_alimentaria_bedu.csv")
+```
+
+##### Observamos cual es su estructura, cuantas columnas, que tipo de datos
+
+- nse5f (Nivel socieconómico del hogar): 1 "Bajo", 2 "Medio bajo", 3 "Medio", 4 "Medio alto", 5 "Alto"
+
+- area (Zona geográfica): 0 "Zona urbana", 1 "Zona rural"
+
+- numpeho (Número de persona en el hogar)
+
+- refin (Recursos financieros distintos al ingreso laboral): 0 "no", 1 "sí"
+
+- edadjef (Edad del jefe/a de familia)
+
+- sexoje (Sexo del jefe/a de familia): 0 "Hombre", 1 "Mujer"
+
+- añosedu (Años de educación del jefe de familia)
+
+- ln_als (Logarítmo natural del gasto en alimentos saludables)
+
+- ln_alns (Logarítmo natural del gasto en alimentos no saludables)
+
+- IA (Inseguridad alimentaria en el hogar): 0 "No presenta IA", 1 "Presenta IA"
+
+```{r}
+str(df)
+```
+
+##### Resumimos el data frame para ver si tiene el formato correcto 
+
+```{r}
+summary(df)
+```
+
+ Del resumen podemos observar que en las columnas `edadjef, sexojef, ln_als, ln_alns` hay celdas con valores NA,vamos a eliminarlos haciendo uso de la siguiente función
+
+```{r}
+sum(complete.cases(df))
+dfclean <- df[complete.cases(df),]
+```
+
+
+##### Vamos a dar formato a las variables por que tal como estan no nos proporcionan información de utilidad
+
+```{r}
+dfclean$nse5f <- factor(dfclean$nse5f, labels  = c("Bajo", "Medio bajo" ,"Medio" , "Medio Alto" , "Alto"), ordered = TRUE)
+dfclean$area <- factor(dfclean$area, labels = c("Zona urbana", "Zona rural"), ordered = TRUE)
+dfclean$refin <- factor(dfclean$refin, labels = c("No", "Si"),ordered = TRUE)
+dfclean$sexojef <- factor(dfclean$sexojef, labels = c("Hombre", "Mujer"), ordered = TRUE)
+dfclean$IA <- factor(dfclean$IA, labels = c("No presenta IA", "Presenta IA"), ordered = TRUE)
+```
+
+
+##### Vamos a transformar el gasto en alimentos tanto saludables como no saludables en un número que nos de mas información que el logaritmo natural
+
+```{r}
+dfclean$ln_als <- dfclean$ln_als
+dfclean$ln_alns <- dfclean$ln_alns
+df2 <- rename(dfclean,"als" = "ln_als", "alns"="ln_alns")
+```
+
+##### Resumimos los datos 
+
+```{r}
+summary(df2)
+```
+
+
+##### Obtenemos tablas de frecuencia y frecuencia relativa para las variables: nivel socioeconomico, Ingreso extra, inseguridad alimentaria, area, sexo para complementar los datos obtenidos del resumen.
+
+```{r}
+freq.nse <- table(df2$nse5f)
+transform(freq.nse, 
+          rel.freq=prop.table(freq.nse))
+```
+
+```{r}
+freq.refin <- table(df2$refin)
+ transform(freq.refin, 
+          rel.freq2=prop.table(freq.refin))
+```
+
+
+```{r}
+freqIA <- table(df2$IA)
+transform(freqIA, 
+          rel.freq3=prop.table(freqIA))
+```
+
+
+```{r}
+freq.area <- table(df2$area)
+transform(freq.area, 
+          rel.freq4=prop.table(freq.area))
+```
+
+
+```{r}
+par(mfrow=c(3,3))
+
+{ hist(df2$als, main = "Gasto en alimentos saludables", xlab = "Gasto ($)")
+  
+  hist(df2$alns, main = "Gasto en alimentos no saludables", xlab = " Gasto($)")
+  
+  hist(df2$numpeho, main = "Personas en el hogar", xlab = "Número de personas")
+  
+  barplot(100* sort(table(df2$nse5f)) / length(df2$nse5f), main = "Nivel socioeconomico", las = 3, ylab = "Porcentaje", col = "lightblue")
+  
+  barplot(100* sort(table(df2$refin), decreasing=T) / length(df2$refin), main = "Ingresos extra", ylab = "Porcentaje", col = "lightblue")
+  
+  barplot(100* sort(table(df2$IA), decreasing=T) / length(df2$IA), main = "Inseguridad alimentaria", ylab = "Porcentaje", col = "lightblue")
+ 
+  par(mar=c(0, 0, 1.1, 0))
+ # pie(table(df2$IA),labels <- round((100* sort(table(df2$IA)) / length(df2$IA)),1), main = "Inseguridad alimentaria")
+  
+  pie(table(df2$area),labels <- c("Urbana", "Rural"), main = "Area")
+  
+  pie(table(df2$sexoje), labels <- c("Hombre", "Mujer"), main = "Sexo")}
+
+```
+
+
+- Quitando los casos NA podemos observar que el número de personas entrevistadas es muy parecido, 
+representando la mayor cantidad el nivel medio alto con un porcentaje de 21.5 %, seguido de un 21.2 % del nivel alto 
+y así en orden decreciente como se muestra en la grafica 'Nivel socioeconomico'."
+
+- Podemos observar que el 80.9 % de las personas entrevistadas no cuentan con ingreso extra
+
+- Se puede apreciar tambien en la grafica 'Inseguridad alimentaria' que el 71.1% de las personas presenta inseguridad alimentaria 
+
+- La Mayoria de los entrevistados reside en zonas urbanas (grafica área), 
+y quien sustenta el hogar son en la mayoria hombres (Grafica Sexo) 
+
+- Del resumen podemos apreciar que la edad promedio del jefe de familia es de 47.32 años, con una educacion premedio de 
+10.9 años.
+
+"La base de datos es un extracto de la Encuesta Nacional de Salud y Nutrición (2012) 
+levantada por el Instituto Nacional de Salud Pública en México. 
+La mayoría de las personas afirman que los hogares con menor nivel socioeconómico 
+tienden a gastar más en productos no saludables que las personas con 
+mayores niveles socioeconómicos y que esto, entre otros determinantes, 
+lleva a que un hogar presente cierta inseguridad alimentaria."
+
+## Hipótesis 
+
+### Se establece un nivel de confianza de 99% para un nivel de significancia de 0.01
+- Ho: En promedio gastan lo mismo independiente del nivel socioeconómico.
+- Ha: Al menos hay un nivel socioeconómico donde el gasto promedio es distinto a los demás.  
+
+- Visualmente los gastos en alimentos no saludables dependiendo del nivel socioeconómico se ven de la siguiente manera
+
+```{r}
+boxplot(dfclean$ln_alns ~ dfclean$nse5f, 
+        xlab = "Nivel socioeconomico", 
+        ylab = "Logaritmo de gastos", 
+        col = rgb(1, 0, 0, alpha = 0.4))
+```
+
+- Realizamos estadística preliminar
+
+```{r}
+group_by(dfclean, nse5f) %>%
+  summarise(
+    mean = mean(ln_alns),
+    sd = sd(ln_alns)
+  )
+```
+
+R. De la gráfica anterior y la estadística descriptiva se puede observar que en promedio no gastan mas en alimentos no saludables los grupos con menor nivel socioeconómico, el gasto va aumentando conforme incrementa el Nivel
+socioecónomico, aunque hay que tomar en cuenta que tambien la dispersión de los datos
+incrementa.  
+ 
+- Vamos a realizar la prueba anova para inferir sobre la población, primero hacemos la prueba de varianzas de los diferentes grupos para ver si son iguales
+
+Establecemos las hipótesis
+
+- Ho: las varianzas son iguales
+- Ha: las varianzas no son iguales 
+
+Hacemos la prueva para aceptar o rechazar las hipótesis con ayuda de la función `leveneTest`
+
+```{r}
+library(car)
+leveneTest(dfclean$ln_alns ~ dfclean$nse5f)
+```
+
+El resultado nos arroja un Pr(>F) (<2e-16) lo cual indica que se rechaza la hipótesis nula para un nivel de significancia de 0.01, esto es, al menos una varianza es diferente. Puesto que las varianzas no son iguales vamos a emplear otra versión del método ANOVA
+
+```{r}
+oneway.test(dfclean$ln_alns ~ dfclean$nse5f, var.equal = FALSE) # considerando varianzas desiguales
+```
+
+El resultado arroja un Pr(>F) (<2.2e-16) por lo que se rechaza la hipotesis nula a un nivel 
+de significancia de 0.01, esto quiere decir que en promedio al menos los gastos 
+entre dos nivel socioeconomico son distintos.
+
+Una vez que tenemos la prueba anterior y como no nos da mucha información sobre las diferencias entre niveles, vamos a hacer uso de la función `pairewise.t.test()` que se puede emplear para hacer comparaciones entre grupos.
+
+
+```{r}
+pairwise.t.test(dfclean$ln_alns, dfclean$nse5f,
+                p.adjust.method = "BH", pool.sd = FALSE)
+```
+
+Dado que todos los valores son cercanos a cero podemos considerar que todas las diferencias
+entre niveles son significativas en los gastos en alimentos no saludables. 
+Con ayuda del boxplot  y con esta prueba podemos concluir que los gastos entre
+niveles en alimentos no saludables es diferente, entre más alto el nivel 
+mayor el gasto y por lo tanto la afirmación que se hace en el planteamiento del problema
+se rechaza. Posteriormente con el modelo podremos decidir que tanto influyen estas variables 
+en la inseguridad alimentaria. 
+
+##### En este punto cabe resltar que quiza la comparación no es equitativa  por que el gasto depende de varios factores, por ejemplo: el ingreso, entre mas alto el nivel mayor ingreso y por lo tanto podria ser un factor que influya en el gasto en alimentos no saludables.
+
+Una forma de tratar de hacerlo mas equitativo es considerando el gasto total entre alimentos
+ no saludables y saludables 
+ 
+ Agregamos una columna a nuestro data frame dfclean con el nombre `ratio2.alns.total` y lo asignamosa un objeto de nombre c2, posteriormente seguimos los pasos que ya vimos anteriormente para ver si hay alguna diferencia
+ 
+```{r}
+c2<- dfclean %>% 
+   mutate(ratio2.alns.total = log(exp(ln_alns)/exp(ln_als))) 
+ 
+```
+ 
+ - Visualizamos
+ 
+```{r}
+boxplot(c2$ratio2.alns.total ~ c2$nse5f, 
+         xlab = "Nivel socioeconomico", 
+         ylab = "Log de gastos", 
+         col = rgb(1, 0, 0, alpha = 0.4))
+```
+ 
+ Establecemos las hipótesis
+
+- Ho: las varianzas de la razon entre gastos saludables y no sludables son iguales
+- Ha: las varianzas no son iguales 
+
+Hacemos la prueba para mostrar si las varianzas son iguales 
+ 
+```{r}
+ leveneTest(c2$ratio2.alns.total ~ c2$nse5f)
+```
+ 
+ 
+ R.- Para el nivel de significacia de 0.01 con un p-value de 3.201e-06 se rechaza la hipótesis nula, esto es, al menos una varianza en la razon es distinta por grupo.
+ 
+- Como las varianzas no son iguales aplicamos la prueba anova en la forma para varianzas 
+desiguales
+
+```{r}
+ oneway.test(c2$ratio2.alns.total ~ c2$nse5f, var.equal = FALSE)
+```
+
+ 
+De aquí podemos observar que se rechaza la hipótesis nula, esto es, la razon de gastos en promedio de un nivel socioeconomico en alimentos no saludables es distinto a los otros. 
+
+ Aplicamos la prueba para determinar cuales diferencias entre niveles son relevantes
+ 
+```{r}
+pairwise.t.test(c2$ratio2.alns.total, c2$nse5f, 
+                 p.adjust.method = "BH", pool.sd = FALSE)
+```
+ 
+ De esta prueba las diferencias entre bajo-medio bajo, bajo-medio, bajo-medio alto,
+ medio bajo-medio no son relevantes la razon entre gastos en alimentos no saludables
+ se puede considerar igual, mientras que entre los otros niveles las diferencias son 
+ significativas. 
+
+
+
+
+#### Vamos a realizar una prueba anova de dos lados (two sided) para ver si los gastos en alimentos no saludables dependiendo del nivel socioeconomico influyen en la inseguridad alimentaria
+
+- Hopotesis Ho:
+
+a) No hay diferencia en el gasto promedio en alns dependiendo del nivel socioeconomico.
+
+b) No hay diferencia en los gastos promedios en alns que impliquen inseguridad alimentaria
+
+c) No hay relación entre el nivel socioeconomico y la inseguridad alimentaria
+
+- Ha: para a y b: los gastos promedios no son todos iguales.
+
+- Ha: para c: hay relacion entre el nivel socioeconomico y la inseguridad alimentaria.
+
+```{r}
+frec.t <- table(dfclean$nse5f,dfclean$IA)
+frec.t
+```
+
+- Visualizamos los datos separados por nivel socioeconomico y si presentan o no inseguridad alimentaria
+
+```{r}
+install.packages("ggpubr")
+library(ggpubr)
+```
+
+```{r}
+ggboxplot(dfclean, x = "nse5f", y = "ln_alns", color = "IA",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+
+- La siguiente grafica muestra si existe interacción entre grupos dependiendo del nivel socioeconomico
+
+```{r}
+I.alimentaria <- dfclean$IA
+interaction.plot(x.factor = dfclean$nse5f, trace.factor = I.alimentaria, 
+                 response = dfclean$ln_alns, fun = mean, 
+                 type = "b", legend = TRUE, 
+                 xlab = "Nivel socioeconomico", ylab="lnalns",
+                 pch=c(1,19), col = c("#00AFBB", "#E7B800"))
+```
+
+- Realizamos estadistica preeliminar
+
+```{r}
+group_by(dfclean, nse5f, IA) %>%
+  summarise(
+    mean = mean(ln_alns),
+    sd = sd(ln_alns)
+  )
+```
+
+#### Considerando que la inseguridad alimetaria es independiente del nivel socioeconomico
+
+```{r}
+anova_test <- aov(dfclean$ln_alns ~ dfclean$nse5f+dfclean$IA)
+summary(anova_test)
+```
+
+R. de acuerdo a los resultados tanto el nivel socioeconomico como la inseguridad 
+alimentaria tienen significancia, lo que podria indicar que los gastos en alimentos 
+no saludables dependen tanto del nivel socioeconomico como de si hay o no inseguridad 
+alimentaria. 
+
+#### Two-way ANOVA con efectos de interacción
+
+```{r}
+res.aov <- aov(dfclean$ln_alns ~ dfclean$nse5f*dfclean$IA)
+summary(res.aov)
+```
+
+R. De esta prueba podemos concluir que tanto el nivel socioeconomico como
+la inseguridad alimentaria son significantes, al igual que su interacción. 
+Si consideramos independencia entre los gastos y el nivel socioeconomico
+
+##### MODELO PROBABILISTICO
+
