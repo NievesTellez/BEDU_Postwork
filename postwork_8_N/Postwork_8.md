@@ -268,11 +268,7 @@ hogar. El gasto promedio en alimentos saludables es de 540.3 pesos,
 mientras que el gasto promedio en alimentos no saludables es de 109.3
 ’’’
 
-### La mayoría de las personas afirman que los hogares con menor 
-### nivel socioeconómico tienden a gastar más en productos no saludables que
-### las personas con mayores niveles socioeconómicos y que esto, entre otros
-### determinantes, lleva a que un hogar presente cierta inseguridad
-### alimentaria.”
+### La mayoría de las personas afirman que los hogares con menor nivel socioeconómico tienden a gastar más en productos no saludables que las personas con mayores niveles socioeconómicos y que esto, entre otros determinantes, lleva a que un hogar presente cierta inseguridad alimentaria.
 
 ## Hipótesis
 
