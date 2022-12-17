@@ -319,10 +319,10 @@ dispersión de los datos incrementa.
 
 Considerando:
 
-- Una muestra aleatoria
-- Independiente
-- Se distribuye de manera normal 
-- Homogeneidad en las varianzas
+1. Una muestra aleatoria
+2. Independiente
+3. Se distribuye de manera normal 
+4. Homogeneidad en las varianzas
 
 Vamos a realizar la prueba anova para inferir sobre la población,
   primero hacemos la prueba de varianzas de los diferentes grupos para
